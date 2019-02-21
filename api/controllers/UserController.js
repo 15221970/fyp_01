@@ -10,7 +10,8 @@ module.exports = {
     create: function (req, res) {
         if (req.method == "POST") {
             User.create(req.body.User).exec(function (err, model) {
-                return res.send("Successfully Created!");
+                
+                return res.redirect("user/welcome");
             });
         } else {
             return res.view('user/create');
@@ -61,6 +62,10 @@ module.exports = {
 
     home: function (req, res) {
         return res.view('user/home');
+    },
+    
+    welcome: function (req, res) {
+        return res.view('user/welcome');
     },
 
     // upload: function (req, res) {
