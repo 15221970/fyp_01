@@ -8,7 +8,14 @@
 module.exports = {
 
   attributes: {
+    
+    username: {
+      type: 'string',
+      unique: true
+    },
+  },
+  
+  
 
-  }
 };
 

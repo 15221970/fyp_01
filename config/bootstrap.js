@@ -11,16 +11,27 @@
 
 module.exports.bootstrap = function (cb) {
 
+
+  // Load the bcrypt module
+  var bcrypt = require('bcrypt');
+
+  // Generate a salt
+  var salt = bcrypt.genSaltSync(10);
+
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   var users = [
     { "username": "admin", "password": "123456", "id": 101 },
     { "username": "user", "password": "123", "id": 102 }
-];
+  ];
 
-users.forEach(function (user) {
+  users.forEach(function (user) {
+
+    user.password = bcrypt.hashSync(user.password, salt);
+
     User.create(user).exec(function (err, model) { });
-});
+
+  });
 
 
   cb();

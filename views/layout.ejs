@@ -65,9 +65,13 @@
           <li class="nav-item">
             <a class="nav-link" id="upload" href="/photo/upload">Upload</a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" id="admin" href="/event/admin">Admin</a>
-          </li> -->
+    
+
+          <%if (req.session.username == "admin"){ %>
+            <li class="nav-item">
+                <a class="nav-link" id="admin" href="/user/admin">Admin</a>
+              </li>
+            <% } %>
           <% if (typeof req.session.username != "undefined" ) { %>
           
             <li class="nav-item">

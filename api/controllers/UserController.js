@@ -8,9 +8,21 @@
 module.exports = {
 
     create: function (req, res) {
+        //console.log("This is 1 " + req.body.username);
+        //console.log("This is 2 " + req.body.user.username);
+        //var params = req.body.username;
+
+        // User.findOne(params).done(function (error) {
+
+        //     // DB error
+        //     if (error) {
+        //         return res.send(error, 500);
+        //     }
+        // });
         if (req.method == "POST") {
+
             User.create(req.body.User).exec(function (err, model) {
-                
+
                 return res.redirect("user/welcome");
             });
         } else {
@@ -19,6 +31,11 @@ module.exports = {
     },
 
     login: function (req, res) {
+        // Load the bcrypt module
+        var bcrypt = require('bcrypt');
+
+        // Generate a salt
+        var salt = bcrypt.genSaltSync(10);
 
         if (req.method == "GET")
             return res.view('user/login');
@@ -28,7 +45,8 @@ module.exports = {
                 if (user == null)
                     return res.send("No such user");
 
-                if (user.password != req.body.password)
+                //  if (user.password != req.body.password)
+                if (!bcrypt.compareSync(req.body.password, user.password))
                     return res.send("Wrong Password");
 
                 console.log("The session id " + req.session.id + " is going to be destroyed.");
@@ -39,7 +57,7 @@ module.exports = {
 
                     req.session.username = req.body.username;
 
-                    return res.view("user/home");
+                    return res.send("login successfully.");
 
                 });
             });
@@ -63,11 +81,13 @@ module.exports = {
     home: function (req, res) {
         return res.view('user/home');
     },
-    
+
     welcome: function (req, res) {
         return res.view('user/welcome');
     },
-
+    admin: function (req, res) {
+        return res.view('user/admin');
+    },
     // upload: function (req, res) {
     //     if (req.session.username != undefined) {
     //         if (req.method == "POST") {
