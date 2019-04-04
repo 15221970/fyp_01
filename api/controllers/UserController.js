@@ -8,22 +8,14 @@
 module.exports = {
 
     create: function (req, res) {
-        //console.log("This is 1 " + req.body.username);
-        //console.log("This is 2 " + req.body.user.username);
-        //var params = req.body.username;
 
-        // User.findOne(params).done(function (error) {
-
-        //     // DB error
-        //     if (error) {
-        //         return res.send(error, 500);
-        //     }
-        // });
         if (req.method == "POST") {
 
             User.create(req.body.User).exec(function (err, model) {
-
-                return res.redirect("user/welcome");
+                if (err && err.code == 'E_VALIDATION'){
+                    return res.send("username has been used");
+                }
+                return res.redirect("/user/welcome");
             });
         } else {
             return res.view('user/create');

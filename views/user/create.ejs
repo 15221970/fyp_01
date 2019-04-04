@@ -1,4 +1,4 @@
-<form action="/user/create" method="POST">
+<form action="/user/create" method="POST"  >
     <div class="form-group">
         <label>Name:</label>
         <input type="text" class="form-control" name="User[username]" required>
@@ -22,7 +22,16 @@
         </small>
 
     </div>
-
+    <!-- <div class="form-group">
+            <label for="password">Choose a password</label>
+            <input class="form-control" id="password" type="password"  :class="[formErrors.password ? 'is-invalid' : '']" v-model.trim="formData.password" placeholder="••••••••" autocomplete="new-password">
+            <div class="invalid-feedback" v-if="formErrors.password">Please enter a password.</div>
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm password</label>
+            <input class="form-control" id="confirm-password" type="password"  :class="[formErrors.confirmPassword ? 'is-invalid' : '']" v-model.trim="formData.confirmPassword" placeholder="••••••••" autocomplete="new-password">
+            <div class="invalid-feedback" v-if="formErrors.confirmPassword">Your password and confirmation do not match.</div>
+          </div> -->
     <br>
     <label>Email address:</label>
     <input type="email" class="form-control" placeholder="Email address" id="email" name="User[email]" required>
@@ -31,8 +40,21 @@
 
     <button type="submit" class="btn btn-default">Submit</button>
 
-    <script>
-         var name = document.getElementById("username");
-         console.log(document);
-        </script>
+    
+ <!-- <script>
+            function submitForm(oFormElement) {
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    if (xhr.responseText == "create successfully") {
+                        window.location = "/user/welcome";
+                    }
+                    else {
+                        alert(xhr.responseText);
+                    }
+                }
+                xhr.open(oFormElement.method, oFormElement.action, true);
+                xhr.send(new FormData(oFormElement));
+                return false;
+            }
+        </script> -->
 </form>

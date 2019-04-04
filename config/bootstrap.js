@@ -33,6 +33,24 @@ module.exports.bootstrap = function (cb) {
 
   });
 
+  // // Load the bcrypt module
+  // sails.bcrypt = require('bcrypt');
 
-  cb();
-};
+  // // Go through a series of rounds to give you a secure hash
+  // const saltRounds = 10;
+
+  // var users = [
+  //   { "username": "admin", "password": "123456" },
+  //   { "username": "boss", "password": "123456" }
+  // ];
+
+  // users.forEach(function (user) {
+
+  //   user.password = sails.bcrypt.hashSync(user.password, saltRounds);
+
+  //   User.create(user).exec(function (err, model) { });
+  
+  // });
+
+    cb();
+  };
