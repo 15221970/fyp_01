@@ -21,24 +21,54 @@ module.exports = {
 
     //  
     upload: function (req, res) {
-        if (req.method === 'GET') {
-            return res.view('photo/upload');
-        }
-        else {
-            // Call to /upload via GET is error
-            var uploadFile = req.file('photo');
-            uploadFile.upload({ dirname: '../../assets/images' }, function onUploadComplete(err, files) {
-                // Files will be uploaded to .tmp/uploads
-                if (err) {
-                    return res.serverError(err);  // IF ERROR Return and send 500 error with error
-                }
-                
-                return res.json({
-                    status: 200,
-                    file: files
+        if (req.session.username != undefined) {
+            if (req.method == 'GET') {
+                return res.view('photo/upload');
+            }
+            else {
+                var uploadFile = req.file('photo[file]');
+                // console.log(req.body);
+                uploadFile.upload({ dirname: sails.config.appPath + '/assets/images' }, function onUploadComplete(err, files) {
+
+                    if (err) {
+                        return res.serverError(err);  // IF ERROR Return and send 500 error with error
+                    }
+
+                    console.log(files[0]);
+
+                    files[0].username = req.session.username;
+                    files[0].description = req.body['photo[description]'];
+
+                    var ExifImage = require('exif').ExifImage;
+                    try {
+                        new ExifImage({ image: files[0].fd }, function (error, exifData) {
+                            if (error)
+                                console.log('Error: ' + error.message);
+                            else
+                                console.log(exifData); // Do something with your data!
+
+                            files[0].exifData = exifData;
+
+                            Photo.create(files[0]).exec(function (err, model) {
+                                return res.json({
+                                    status: 200,
+                                    file: files
+                                })
+                            });
+                        });
+                    } catch (error) {
+                        console.log('Error: ' + error.message);
+                    }
+
+
+
                 });
-            });
+            }
+        } else {
+            return res.view('user/login');
         }
+
     }
+
 };
 

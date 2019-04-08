@@ -1,51 +1,42 @@
-<form action="/user/create" method="POST"  >
+<form action="/user/create" method="POST" onsubmit="submitForm(this); return false;">
     <div class="form-group">
         <label>Name:</label>
-        <input type="text" class="form-control" name="User[username]" required>
+        <input type="text" class="form-control" placeholder="Username" name="username" required>
     </div>
     <label>Password:</label>
     <div>
-        <input type="password" id="psw" required class="form-control" minlength="8" placeholder="Password"
-            name="User[password]">
+        <input type="password" id="psw" class="form-control" minlength="6" placeholder="Password" name="password"
+            required>
         <small id="passwordHelpBlock" class="form-text text-muted">
-            Your password must be 8-20 characters long.
+            Your password must be longer than 6 characters.
         </small>
     </div>
 
     <br>
     <label>Confirm Password:</label>
     <div>
-        <input type="password" class="form-control" placeholder="Confirm Password" id="confirm_password" required>
+        <input type="password" class="form-control" placeholder="Confirm Password" id="confirm_psw" name="comfirm_pwd"
+            required>
 
         <small id="passwordHelpBlock" class="form-text text-muted">
             Must be same as the password you input above.
         </small>
 
     </div>
-    <!-- <div class="form-group">
-            <label for="password">Choose a password</label>
-            <input class="form-control" id="password" type="password"  :class="[formErrors.password ? 'is-invalid' : '']" v-model.trim="formData.password" placeholder="••••••••" autocomplete="new-password">
-            <div class="invalid-feedback" v-if="formErrors.password">Please enter a password.</div>
-          </div>
-          <div class="form-group">
-            <label for="confirm-password">Confirm password</label>
-            <input class="form-control" id="confirm-password" type="password"  :class="[formErrors.confirmPassword ? 'is-invalid' : '']" v-model.trim="formData.confirmPassword" placeholder="••••••••" autocomplete="new-password">
-            <div class="invalid-feedback" v-if="formErrors.confirmPassword">Your password and confirmation do not match.</div>
-          </div> -->
     <br>
     <label>Email address:</label>
-    <input type="email" class="form-control" placeholder="Email address" id="email" name="User[email]" required>
+    <input type="email" class="form-control" placeholder="Email address" id="email" name="email" required>
 
     <br>
 
     <button type="submit" class="btn btn-default">Submit</button>
 
-    
- <!-- <script>
+
+    <script>
             function submitForm(oFormElement) {
                 var xhr = new XMLHttpRequest();
                 xhr.onload = function () {
-                    if (xhr.responseText == "create successfully") {
+                    if (this.responseText == "create successfully") {
                         window.location = "/user/welcome";
                     }
                     else {
@@ -56,5 +47,5 @@
                 xhr.send(new FormData(oFormElement));
                 return false;
             }
-        </script> -->
+        </script>
 </form>

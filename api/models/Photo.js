@@ -8,7 +8,10 @@
 module.exports = {
 
   attributes: {
-
+    beingUploaded: {
+      collection: 'User',
+      via: 'uploadphoto'
+  },
   }
 };
 

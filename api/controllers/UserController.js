@@ -11,12 +11,39 @@ module.exports = {
 
         if (req.method == "POST") {
 
-            User.create(req.body.User).exec(function (err, model) {
-                if (err && err.code == 'E_VALIDATION'){
+            var bcrypt = require('bcrypt');
+            var salt = bcrypt.genSaltSync(10);
+            const saltRounds = 10;
+            var input = req.body;
+
+            // if (input.password!=req.body.comfirm_pwd){
+            //     return res.send("Two input password must be consistent!");
+            // }
+
+
+
+            console.log(input.username);
+            User.findOne({ username: input.username }).exec(function (err, model) {
+                console.log("model: " + model);
+                if (model) {
                     return res.send("username has been used");
                 }
-                return res.redirect("/user/welcome");
+
+                input.password = bcrypt.hashSync(input.password, saltRounds);
+
+                var inputdata = {username: input.username, password: input.password, email: input.email };
+                User.create(inputdata).exec(function (err, model2) {
+
+                    console.log(model2);
+
+                    // if (err && err.code == 'E_VALIDATION') {
+                    //     return res.send("username has been used");
+                    // }
+                    return res.send("create successfully");
+                });
             });
+
+
         } else {
             return res.view('user/create');
         }
@@ -37,7 +64,6 @@ module.exports = {
                 if (user == null)
                     return res.send("No such user");
 
-                //  if (user.password != req.body.password)
                 if (!bcrypt.compareSync(req.body.password, user.password))
                     return res.send("Wrong Password");
 
@@ -61,7 +87,7 @@ module.exports = {
         console.log("The current session id " + req.session.id + " is going to be destroyed.");
 
         req.session.destroy(function (err) {
-            //return res.send("Log out successfully.");
+
             return res.redirect("/");
         });
     },
@@ -80,17 +106,15 @@ module.exports = {
     admin: function (req, res) {
         return res.view('user/admin');
     },
-    // upload: function (req, res) {
-    //     if (req.session.username != undefined) {
-    //         if (req.method == "POST") {
-    //             console.log("The current session id " );
-    //             User.create(req.body.User).exec(function (err, model) {
-    //                 return res.send("Upload Created!");
-    //             });
-    //              } else return res.view('user/upload');
-    //              } else
-    //         return res.view('user/login');
 
-    // },
+
+    showUploadPhoto: function (req, res) {
+
+        User.findOne(req.params.id).populateAll().exec(function (err, model) {
+
+            return res.json(model);
+
+        });
+    },
 };
 
