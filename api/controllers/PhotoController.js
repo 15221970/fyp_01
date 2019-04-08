@@ -27,7 +27,7 @@ module.exports = {
             }
             else {
                 var uploadFile = req.file('photo[file]');
-                // console.log(req.body);
+                //  console.log(req.body);
                 uploadFile.upload({ dirname: sails.config.appPath + '/assets/images' }, function onUploadComplete(err, files) {
 
                     if (err) {
@@ -42,13 +42,16 @@ module.exports = {
                     var ExifImage = require('exif').ExifImage;
                     try {
                         new ExifImage({ image: files[0].fd }, function (error, exifData) {
-                            if (error)
+                            if (error){
                                 console.log('Error: ' + error.message);
-                            else
+       
+                            }else
                                 console.log(exifData); // Do something with your data!
 
                             files[0].exifData = exifData;
-
+                            // if(error.message== 'No Exif segment found in the given image.'){
+                            //     file[0].exifData= null;
+                            // }
                             Photo.create(files[0]).exec(function (err, model) {
                                 return res.json({
                                     status: 200,
@@ -68,7 +71,19 @@ module.exports = {
             return res.view('user/login');
         }
 
-    }
+    },
+   
+   
+    // paginate: function (req, res) {
+
+    //     const qPage = req.query.page || 1;
+    
+    //     Photo.find().paginate({ page: qPage, limit: 6 }).exec(function (err, photo) {
+    //         Photo.count().exec(function (err, value) {
+    //             var pages = Math.ceil(value / 2);
+    //             return res.view('person/paginate', { 'photo': photo, 'count': pages });
+    //         });
+    //     });
+    // },
 
 };
-

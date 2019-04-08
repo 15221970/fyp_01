@@ -1,3 +1,6 @@
+
+<form action="/user/home/"></form>
+
 <!-- Default home page -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600' rel='stylesheet' type='text/css'>
 <style>
@@ -16,5 +19,79 @@
       <%= __('Photo Sharing for learning') %>
     </h1>
   </div>
-
     </div>
+    <div class="container">
+
+            <div class="row">
+                    <% photo.forEach( function(photo) { %>
+
+            <div class="card  col-12 col-sm-6 col-lg-4 col-xl-3">
+                <img class="card-img-top" src="/images/<%= photo.filename %>" alt="no photo" width="200" height="200">
+                
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <%= photo.description %>
+                    </h3>
+    
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <b>User:</b>
+                        <%= photo.username %>
+                    </li>
+                    <li class="list-group-item">
+                        <b>DateTimeOriginal:</b>
+    
+                        <%= photo.exifData.exif.DateTimeOriginal %>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Post Date and Time:</b>
+    
+                        <%= photo.createdAt %>
+                    </li>
+    
+                </ul>
+                <div class="card-body">
+                    <a href="../photo/upload" class="card-link">Detail</a>
+                    <br>
+                    <a href="../user/login" class="card-link">Register</a>
+                </div>
+            </div>
+    
+    
+            <% }); %>
+
+    
+        </div>
+       <br>
+        <div>
+            <!-- <a href="../event/allevent" id="loadMore">Show More</a> -->
+  
+            <p class="totop">
+                <a href="#top">Back to top</a>
+            </p>
+        </div>
+    </div>
+    <br>
+
+    <% const current = Number(req.query.page || 1); %>
+
+    <nav aria-label="Page navigation example" >
+           
+        <ul class="pagination justify-content-center">               
+                <li class="page-item">
+                    <a class="page-link" href="/user/home/?page=<%= Math.max(current-1, 1) %>">Previous</a>
+                </li>
+        
+                <% for (i = 1; i <= count; i++) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/user/home/?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+               
+                <li class="page-item">
+                    <a class="page-link" href="/user/home/?page=<%= Math.min(current+1, count) %>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    

@@ -27,7 +27,7 @@
                 var xhr = new XMLHttpRequest();
                 xhr.onload = function () {
                     if (xhr.responseText == "login successfully.") {
-                        window.location = "/user/home";
+                        window.location = "/user/profile";
                     }
                     else {
                         alert(xhr.responseText);
