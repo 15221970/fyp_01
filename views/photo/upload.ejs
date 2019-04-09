@@ -1,40 +1,429 @@
 <form action="/photo/upload" enctype="multipart/form-data" method="POST">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600' rel='stylesheet' type='text/css'>
-    <style>
-      /* Styles included inline since you'll probably be deleting this page anyway */
-      html,body{text-align:left;font-size:1em}html,body,img,form,textarea,input,fieldset,div,p,div,ul,li,ol,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,code{margin:0;padding:0}ul,li{list-style:none}img{display:block}a img{border:0}a{text-decoration:none;font-weight:normal;font-family:inherit}*:active,*:focus{outline:0;-moz-outline-style:none}h1,h2,h3,h4,h5,h6{font-weight:normal}div.clear{clear:both}.clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden}body{font-family:"Open Sans",Arial,sans-serif;font-weight:300;}.top-bar {width: 100%; background-color: #e4f0f1; padding: 15px 0;}.top-bar .container img {float: left;}.top-bar .container ul {float: right; padding-top: 25px;}.top-bar .container li {float: left; width: 125px; text-align: center; font-size: 15px; color:#000; font-weight: 600;}.top-bar .container a li:hover {color: #118798; -webkit-transition:color 200ms; -moz-transition:color 200ms; -o-transition:color 200ms;transition:color 200ms;}.container{width: 80%; max-width: 1200px; margin: auto;}div.header {-webkit-transition: 6s; -moz-transition: 6s; -o-transition: 6s;transition: 6s; background: rgba(4, 36, 41, 0.89) url(http://sailsjs.org/images/img_sailsShadow.png) no-repeat 42% bottom; padding: 100px 0 65px;}.header h1#main-title{color: #fff; font-weight: 300; font-size: 2.5em;}.header h3{color: #b1eef7; font-style: italic; font-weight: 300;}.header h3 code{font-style: normal!important; background-color: rgba(255,255,255,0.5); font-weight: 300; color:#0e6471; margin: 0px 5px;}div.main.container{padding: 50px 0;}h1 {color: #118798; font-weight: 300;}code {font-size: inherit; font-family: 'Consolas', 'Monaco', monospace; padding:4px 5px 1px; background-color: #f3f5f7}a{color: #118798; font-weight: 300; text-decoration: underline;}a:hover {color: #0e6471; -webkit-transition:color 200ms; -moz-transition:color 200ms; -o-transition:color 200ms;transition:color 200ms;}p{line-height: 1.5em;}blockquote{background-color: #e4f0f1; padding: 25px; line-height: 1.5em; margin: 15px 0;}blockquote span{font-weight: 600; padding-right: 5px;}ul.getting-started{padding: 25px 75px 25px 0; width: 70%; float: left; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}ul.getting-started li{padding: 25px 0;}ul.getting-started li h3 {padding-bottom: 10px; font-size: 25px; font-weight: 300;}.sprite{background:url(http://sailsjs.org/images/newapp.sprite.png) no-repeat; position: absolute; left: 0; top:0;}.getting-started .sprite{margin-left:10px;padding-left:60px;height:42px;width:0; float: left;}.getting-started .one{background-position:0 0}.getting-started .two{background-position:0 -42px}.getting-started .three{background-position:0 -83px}div.step {position: relative; padding-left: 70px; opacity: 0.9;}div.step:hover{ opacity: 1;}div.links {float: left; width: 30%; max-width: 325px; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; background-color: #f3f5f7; border: 1px solid #ebebeb; padding: 25px 45px 35px;}div.links h3 {color: #727272; text-align: center; font-size: 28px; font-weight: 300;}div.links h4 {color: #727272; font-size: 17px; font-weight: 600; padding: 15px 0 10px;}div.links .link-list a {text-decoration: none; font-weight: 400;}div.links .link-list a li {padding: 0px 0px 5px 10px;}div.default-page{min-width: 1200px;}.pocket{display:none;}
-    </style>
-    <script type="text/javascript">
-      setTimeout(function sunrise() {
-        document.getElementsByClassName('header')[0].style.backgroundColor = '#118798';
-      }, 0);
-    </script>
-    
-    <div class="default-page">
-      <div class="header">
-        <h1 id="main-title" class="container">
-          <%= __('Upload Photo') %>
-        </h1>
-      </div>
-    
-        </div>
-    <form>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600' rel='stylesheet' type='text/css'>
+  <style>
+    /* Styles included inline since you'll probably be deleting this page anyway */
+    html,
+    body {
+      text-align: left;
+      font-size: 1em
+    }
 
-        <div class="form-group">
-                <label for="text ">Description</label>
-            <textarea type="text" class="form-control-file" id="d_text" name="photo[description]"></textarea>
-        </div>
+    html,
+    body,
+    img,
+    form,
+    textarea,
+    input,
+    fieldset,
+    div,
+    p,
+    div,
+    ul,
+    li,
+    ol,
+    dl,
+    dt,
+    dd,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    pre,
+    code {
+      margin: 0;
+      padding: 0
+    }
 
-        <div class="form-group">
-            <label for="file upload"> Upload Photo</label>
-            <input type="file" class="form-control-file" name="photo[file]">
-          
-        </div>
-        <br>
-        <div align="left">
-            <button type="submit" class="btn btn-primary">submit</button>
-        </div>
-    </form>
+    ul,
+    li {
+      list-style: none
+    }
 
+    img {
+      display: block
+    }
 
+    a img {
+      border: 0
+    }
+
+    a {
+      text-decoration: none;
+      font-weight: normal;
+      font-family: inherit
+    }
+
+    *:active,
+    *:focus {
+      outline: 0;
+      -moz-outline-style: none
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: normal
+    }
+
+    div.clear {
+      clear: both
+    }
+
+    .clearfix:after {
+      clear: both;
+      content: ".";
+      display: block;
+      font-size: 0;
+      height: 0;
+      line-height: 0;
+      visibility: hidden
+    }
+
+    body {
+      font-family: "Open Sans", Arial, sans-serif;
+      font-weight: 300;
+    }
+
+    .top-bar {
+      width: 100%;
+      background-color: #e4f0f1;
+      padding: 15px 0;
+    }
+
+    .top-bar .container img {
+      float: left;
+    }
+
+    .top-bar .container ul {
+      float: right;
+      padding-top: 25px;
+    }
+
+    .top-bar .container li {
+      float: left;
+      width: 125px;
+      text-align: center;
+      font-size: 15px;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .top-bar .container a li:hover {
+      color: #118798;
+      -webkit-transition: color 200ms;
+      -moz-transition: color 200ms;
+      -o-transition: color 200ms;
+      transition: color 200ms;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    div.header {
+      -webkit-transition: 6s;
+      -moz-transition: 6s;
+      -o-transition: 6s;
+      transition: 6s;
+      background: rgba(4, 36, 41, 0.89) url(http://sailsjs.org/images/img_sailsShadow.png) no-repeat 42% bottom;
+      padding: 100px 0 65px;
+    }
+
+    .header h1#main-title {
+      color: #fff;
+      font-weight: 300;
+      font-size: 2.5em;
+    }
+
+    .header h3 {
+      color: #b1eef7;
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .header h3 code {
+      font-style: normal !important;
+      background-color: rgba(255, 255, 255, 0.5);
+      font-weight: 300;
+      color: #0e6471;
+      margin: 0px 5px;
+    }
+
+    div.main.container {
+      padding: 50px 0;
+    }
+
+    h1 {
+      color: #118798;
+      font-weight: 300;
+    }
+
+    code {
+      font-size: inherit;
+      font-family: 'Consolas', 'Monaco', monospace;
+      padding: 4px 5px 1px;
+      background-color: #f3f5f7
+    }
+
+    a {
+      color: #118798;
+      font-weight: 300;
+      text-decoration: underline;
+    }
+
+    a:hover {
+      color: #0e6471;
+      -webkit-transition: color 200ms;
+      -moz-transition: color 200ms;
+      -o-transition: color 200ms;
+      transition: color 200ms;
+    }
+
+    p {
+      line-height: 1.5em;
+    }
+
+    blockquote {
+      background-color: #e4f0f1;
+      padding: 25px;
+      line-height: 1.5em;
+      margin: 15px 0;
+    }
+
+    blockquote span {
+      font-weight: 600;
+      padding-right: 5px;
+    }
+
+    ul.getting-started {
+      padding: 25px 75px 25px 0;
+      width: 70%;
+      float: left;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    ul.getting-started li {
+      padding: 25px 0;
+    }
+
+    ul.getting-started li h3 {
+      padding-bottom: 10px;
+      font-size: 25px;
+      font-weight: 300;
+    }
+
+    .sprite {
+      background: url(http://sailsjs.org/images/newapp.sprite.png) no-repeat;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .getting-started .sprite {
+      margin-left: 10px;
+      padding-left: 60px;
+      height: 42px;
+      width: 0;
+      float: left;
+    }
+
+    .getting-started .one {
+      background-position: 0 0
+    }
+
+    .getting-started .two {
+      background-position: 0 -42px
+    }
+
+    .getting-started .three {
+      background-position: 0 -83px
+    }
+
+    div.step {
+      position: relative;
+      padding-left: 70px;
+      opacity: 0.9;
+    }
+
+    div.step:hover {
+      opacity: 1;
+    }
+
+    div.links {
+      float: left;
+      width: 30%;
+      max-width: 325px;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      background-color: #f3f5f7;
+      border: 1px solid #ebebeb;
+      padding: 25px 45px 35px;
+    }
+
+    div.links h3 {
+      color: #727272;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 300;
+    }
+
+    div.links h4 {
+      color: #727272;
+      font-size: 17px;
+      font-weight: 600;
+      padding: 15px 0 10px;
+    }
+
+    div.links .link-list a {
+      text-decoration: none;
+      font-weight: 400;
+    }
+
+    div.links .link-list a li {
+      padding: 0px 0px 5px 10px;
+    }
+
+    div.default-page {
+      min-width: 1200px;
+    }
+
+    .pocket {
+      display: none;
+    }
+  </style>
+  <script type="text/javascript">
+    setTimeout(function sunrise() {
+      document.getElementsByClassName('header')[0].style.backgroundColor = '#118798';
+    }, 0);
+  </script>
+
+  <div class="default-page">
+    <div class="header">
+      <h1 id="main-title" class="container">
+        <%= __('Upload Photo') %>
+      </h1>
+    </div>
+
+  </div>
+  <form>
+
+    <div class="form-group">
+      <label for="text ">Description</label>
+      <textarea type="text" class="form-control-file" id="d_text" name="photo[description]"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="text ">Location</label>
+      <input type="text" class="form-control" placeholder="Location" name="photo[location]">
+    </div>
+    <div class="form-group">
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <div id="map"></div>
+    </div>
+    <div class="form-group">
+      <label for="file upload"> Upload Photo</label>
+      <input type="file" class="form-control-file" name="photo[file]">
+      <input type="hidden"  name="photo[lat]" id="lat">
+      <input type="hidden"  name="photo[lng]" id="lng" >
+    </div>
+    <br>
+    <div align="left">
+      <button type="submit" class="btn btn-primary">submit</button>
+    </div>
+  </form>
 </form>
+
+<script>
+  // This example adds a search box to a map, using the Google Place Autocomplete
+  // feature. People can enter geographical searches. The search box will return a
+  // pick list containing a mix of places and predicted search terms.
+
+  // This example requires the Places library. Include the libraries=places
+  // parameter when you first load the API. For example:
+  // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+  function initAutocomplete() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: -33.8688, lng: 151.2195 },
+      zoom: 13,
+      mapTypeId: 'roadmap'
+    });
+
+    // Create the search box and link it to the UI element.
+    var input = document.getElementById('pac-input');
+    var searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener('bounds_changed', function () {
+      searchBox.setBounds(map.getBounds());
+    });
+
+    var markers = [];
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener('places_changed', function () {
+      var places = searchBox.getPlaces();
+
+      if (places.length == 0) {
+        return;
+      }
+
+      // Clear out the old markers.
+      markers.forEach(function (marker) {
+        marker.setMap(null);
+      });
+      markers = [];
+
+      // For each place, get the icon, name and location.
+      var bounds = new google.maps.LatLngBounds();
+      places.forEach(function (place) {
+        if (!place.geometry) {
+          console.log("Returned place contains no geometry");
+          return;
+        }
+        var icon = {
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25)
+        };
+
+        // Create a marker for each place.
+        markers.push(new google.maps.Marker({
+          map: map,
+          icon: icon,
+          title: place.name,
+          position: place.geometry.location
+        }));
+
+        console.log(place.geometry.location.lat(), place.geometry.location.lng());
+        document.getElementById('lat').value=place.geometry.location.lat();
+        document.getElementById('lng').value=place.geometry.location.lng();
+
+        if (place.geometry.viewport) {
+          // Only geocodes have viewport.
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+      map.fitBounds(bounds);
+    });
+  }
+
+</script>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzygHpgEpXhCwzaKRkAxF8hlYXkN-FW_k&libraries=places&callback=initAutocomplete"
+  async defer></script>

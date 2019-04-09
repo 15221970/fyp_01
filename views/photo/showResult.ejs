@@ -1,0 +1,6 @@
+<form action="/photo/search?search_user=<%=photo.username%>" method="POST"></form>
+<table class="table">
+        <% photo.forEach( function(photo) { %>
+            <tr><td><%= photo.username %></td><td><%= photo.description %></td></tr>
+        <% }); %>
+    </table>

@@ -35,14 +35,14 @@ module.exports.bootstrap = function (cb) {
   });
 
   var photos = [
-    { "id": 100001, "filename": "test_photo1.JPG", "fd": sails.config.appPath + '/assets/images/test_photo1.JPG', "username": "user","description": "This is test 1!" },
-    { "id": 100002, "filename": "test_photo2.JPG", "fd": sails.config.appPath + '/assets/images/test_photo2.JPG', "username": "user" ,"description": "This is test 2!"},
-    { "id": 100003, "filename": "test_photo3.JPG", "fd": sails.config.appPath + '/assets/images/test_photo3.JPG', "username": "user" ,"description": "This is test 3!"},
-    { "id": 100004, "filename": "test_photo4.JPG", "fd": sails.config.appPath + '/assets/images/test_photo4.JPG', "username": "user" ,"description": "This is test 4!"},
-    { "id": 100005, "filename": "test_photo5.JPG", "fd": sails.config.appPath + '/assets/images/test_photo5.JPG', "username": "testuser" ,"description": "This is test 5!"},
-    { "id": 100006, "filename": "test_photo6.JPG", "fd": sails.config.appPath + '/assets/images/test_photo6.JPG', "username": "testuser" ,"description": "This is test 6!"},
-    { "id": 100007, "filename": "test_photo7.JPG", "fd": sails.config.appPath + '/assets/images/test_photo7.JPG', "username": "testuser" ,"description": "This is test 7!"},
-    { "id": 100008, "filename": "test_photo8.JPG", "fd": sails.config.appPath + '/assets/images/test_photo8.JPG', "username": "testuser" ,"description": "This is test 8!"}
+    { "filename": "test_photo1.JPG", "fd": sails.config.appPath + '/assets/images/test_photo1.JPG', "username": "user","description": "This is test 1!" },
+    { "filename": "test_photo2.JPG", "fd": sails.config.appPath + '/assets/images/test_photo2.JPG', "username": "user" ,"description": "This is test 2!"},
+    { "filename": "test_photo3.JPG", "fd": sails.config.appPath + '/assets/images/test_photo3.JPG', "username": "user" ,"description": "This is test 3!"},
+    { "filename": "test_photo4.JPG", "fd": sails.config.appPath + '/assets/images/test_photo4.JPG', "username": "user" ,"description": "This is test 4!"},
+    { "filename": "test_photo5.JPG", "fd": sails.config.appPath + '/assets/images/test_photo5.JPG', "username": "testuser" ,"description": "This is test 5!"},
+    { "filename": "test_photo6.JPG", "fd": sails.config.appPath + '/assets/images/test_photo6.JPG', "username": "testuser" ,"description": "This is test 6!"},
+    { "filename": "test_photo7.JPG", "fd": sails.config.appPath + '/assets/images/test_photo7.JPG', "username": "testuser" ,"description": "This is test 7!"},
+    { "filename": "test_photo8.JPG", "fd": sails.config.appPath + '/assets/images/test_photo8.JPG', "username": "testuser" ,"description": "This is test 8!"}
   ];
  
   // photos.forEach(function (photo) {
@@ -62,6 +62,26 @@ module.exports.bootstrap = function (cb) {
         //   console.log(exifData); // Do something with your data!
 
         photo.exifData = exifData;
+        photo.lat= null,
+        photo.lng=null,
+        //     lng: photo.lng,
+      //   var inputdata = {
+      //     username:  photo.username,
+      //     description: photo.description,
+      //     filename: photo.filename,
+      //     fd: photo.fd,
+      //     Model:photo.exifData.image.Model,
+      //     Model:photo.exifData.image.Model,
+      //     ExposureTime:photo.exifData.exif.ExposureTime,
+      //     FNumber: photo.exifData.exif.FNumber,
+      //     ISO: photo.exifData.exif.ISO,
+      //     DateTimeOriginal: photo.exifData.exif.DateTimeOriginal,
+      //     MaxApertureValue:photo.exifData.exif.MaxApertureValue,
+      //     FocalLength: photo.exifData.exif.FocalLength,
+      //     lat: photo.lat,
+      //     lng: photo.lng,
+          
+      // };
 
         Photo.create(photo).exec(function (err, model) {
 

@@ -37,24 +37,25 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <b>User:</b>
-                        <%= photo.username %>
+                        <a class="nav-link" href="/user/profile/<%=photo.username%>"><%= photo.username %></a>
                     </li>
                     <li class="list-group-item">
                         <b>DateTimeOriginal:</b>
     
-                        <%= photo.exifData.exif.DateTimeOriginal %>
+                        <%= photo.exifData ? photo.exifData.exif.DateTimeOriginal : '' %>
                     </li>
                     <li class="list-group-item">
-                        <b>Post Date and Time:</b>
-    
-                        <%= photo.createdAt %>
-                    </li>
+                            <b>Post Date and Time:</b>
+        
+                            <%= new Date(photo.createdAt).getDate()%>:<%= new Date(photo.createdAt).getMonth()%>:<%= new Date(photo.createdAt).getFullYear()%>
+                        </br>
+                        <%= new Date(photo.createdAt).getHours()%>:<%= new Date(photo.createdAt).getMinutes()%>:<%= new Date(photo.createdAt).getSeconds()%>
+                        </li>
     
                 </ul>
                 <div class="card-body">
-                    <a href="../photo/upload" class="card-link">Detail</a>
+                    <a href="/photo/detail/<%= photo.id %>" class="card-link">Detail</a>
                     <br>
-                    <a href="../user/login" class="card-link">Register</a>
                 </div>
             </div>
     

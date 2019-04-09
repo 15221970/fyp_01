@@ -1,1 +1,28 @@
+<form action="/user/admin" method="POST"></form>
+
 THIS IS ADMIN PAGE.
+<div class="col-md-6 col-sm-12">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">User Email</th>
+                <th scope="col">Profile</th>
+                <th scope="col">Block Account</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% user.forEach( function(user) { %>
+            <tr>
+                <td>
+                    <a class="nav-link" href="/user/profile/<%=user.username%>"><%= user.username %> </a>
+                </td>
+                <td><%= user.email %></td>
+                <td>Profile</td>
+                <td>Block</td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+</div>

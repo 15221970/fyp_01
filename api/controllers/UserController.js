@@ -22,9 +22,9 @@ module.exports = {
 
 
 
-            console.log(input.username);
+            //console.log(input.username);
             User.findOne({ username: input.username }).exec(function (err, model) {
-                console.log("model: " + model);
+                //console.log("model: " + model);
                 if (model) {
                     return res.send("username has been used");
                 }
@@ -76,8 +76,10 @@ module.exports = {
                 req.session.regenerate(function (err) {
 
                     console.log("The new session id is " + req.session.id + ".");
-
                     req.session.username = req.body.username;
+                   // console.log("req.session.username is " + req.session.username + ".");
+                    if (req.session.username == "admin")
+                        return res.send("This is Admin!");
 
                     return res.send("login successfully.");
 
@@ -96,9 +98,7 @@ module.exports = {
         });
     },
 
-    search: function (req, res) {
-        return res.view('user/search');
-    },
+
 
     // home: function (req, res) {
     //     return res.view('user/home');
@@ -111,16 +111,17 @@ module.exports = {
         return res.view('user/admin');
     },
 
-    profile: function (req, res) {
+    myprofile: function (req, res) {
         if (req.session.username != undefined) {
             const qPage = req.query.page || 1;
 
-            Photo.find().paginate({ page: qPage, limit: 6 })
-            .sort('photo.createdAt DESC')    
-            .exec(function (err, photo) {
+            Photo.find({ username: req.session.username })
+                .paginate({ page: qPage, limit: 6 })
+                .sort({ createdAt: 'DESC' })
+                .exec(function (err, photo) {
                     Photo.count().exec(function (err, value) {
                         var pages = Math.ceil(value / 6);
-                        return res.view('user/profile', { 'photo': photo, 'count': pages });
+                        return res.view('user/myprofile', { 'photo': photo, 'count': pages });
                     });
                 });
         } else {
@@ -128,41 +129,52 @@ module.exports = {
         }
     },
 
-    // profile: function (req, res) {
-    //     Photo.findOne(req.username).populateAll().exec(function (err, photo) {
-    //        console.log(req.username);
-    //         return res.view('user/profile', { 'photo': photo });
+    // showUploadPhoto: function (req, res) {
 
-    //         // return res.view('cupon/mycupon',{'cupon':model.owned, 'coin': model.coin});
+    //     User.findOne(req.params.id).populateAll().exec(function (err, model) {
+
+    //         return res.json(model);
+
     //     });
     // },
 
-    showUploadPhoto: function (req, res) {
-
-        User.findOne(req.params.id).populateAll().exec(function (err, model) {
-
-            return res.json(model);
-
-        });
-    },
-
-    //     home: function(req, res) {
-    //         Photo.find().exec(function(err, photo) {
-
-    //             return res.view('user/home', { 'photo': photo });
-    //            });
-    // },
     home: function (req, res) {
         const qPage = req.query.page || 1;
 
         Photo.find().paginate({ page: qPage, limit: 6 })
-        .sort( { createdAt: 'DESC' })
-        .exec(function (err, photo) {
+            .sort({ createdAt: 'DESC' })
+            .exec(function (err, photo) {
                 Photo.count().exec(function (err, value) {
                     var pages = Math.ceil(value / 6);
                     return res.view('user/home', { 'photo': photo, 'count': pages });
                 });
             });
     },
+
+    admin: function (req, res) {
+        User.find().exec(function (err, user) {
+            return res.view('user/admin', { 'user': user });
+        });
+
+    },
+
+    profile: function (req, res) {
+
+        const qPage = req.query.page || 1;
+       
+
+        console.log(req.params.id);
+   
+        Photo.find({username:req.params.id})
+            .paginate({ page: qPage, limit: 6 })
+            .sort({ createdAt: 'DESC' })
+            .exec(function (err, photo) {
+                Photo.count().exec(function (err, value) {
+                    var pages = Math.ceil(value / 6);
+                    return res.view('user/profile', { 'photo': photo, 'count': pages });
+                });
+            });
+    },
+
 };
 

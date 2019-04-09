@@ -1,37 +1,40 @@
-<form action="/user/profile" method="POST"></form>
+<form action="/user/profile/<%=photo.username%>" method="GET"></form>
 <div class="container">
-    <h3>Your Photo: </h3>
    
-        ========event1========
+       
+            <h3><%=photo[0].username%>'s Photo: </h3>
         <div class="row">
-        <% photo.forEach( function(photo) { %>
+                <% photo.forEach( function(photo) { %>
         <div class="card  col-12 col-sm-6 col-lg-4 col-xl-3">
             <img class="card-img-top" src="/images/<%= photo.filename %>" alt="no photo" width="200" height="200">
             
             <div class="card-body">
-                <h3 class="card-title">
-                    <%= photo.description %>
-                </h3>
+                    <h3 class="card-title">
+                        <%= photo.description %>
+                    </h3>
+    
+                </div>
+                
+                <ul class="list-group list-group-flush">
+                    
 
-            </div>
-            <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                            <b>DateTimeOriginal:</b>
-        
-                            <%= photo.exifData.exif.DateTimeOriginal %>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Post Date and Time:</b>
-        
-                            <%= photo.createdAt %>
-                        </li>
+                        <b>DateTimeOriginal:</b>   
+                        <%= photo.exifData ? photo.exifData.exif.DateTimeOriginal : '' %>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Post Date and Time:</b>
+    
+                        <%= new Date(photo.createdAt).getDate()%>:<%= new Date(photo.createdAt).getMonth()%>:<%= new Date(photo.createdAt).getFullYear()%>
+                    </br>
+                    <%= new Date(photo.createdAt).getHours()%>:<%= new Date(photo.createdAt).getMinutes()%>:<%= new Date(photo.createdAt).getSeconds()%>
+                    </li>
         
 
             </ul>
             <div class="card-body">
-                <a href="../photo/upload" class="card-link">Detail</a>
-                <br>
-                <a href="../user/login" class="card-link">Register</a>
+                <a href="/photo/detail/<%= photo.id %>" class="card-link">Detail</a>
+
             </div>
         </div>
 
@@ -43,7 +46,7 @@
     </div>
    
     <div>
-        <!-- <a href="../event/allevent" id="loadMore">Show More</a> -->
+       
 
         <p class="totop">
             <a href="#top">Back to top</a>
@@ -64,12 +67,12 @@
     
             <% for (i = 1; i <= count; i++) { %>
                 <li class="page-item">
-                    <a class="page-link" href="/user/profile/?page=<%= i %>"><%= i %></a>
+                    <a class="page-link" href="/user/profile/user/?page=<%= i %>"><%= i %></a>
                 </li>
             <% } %>
            
             <li class="page-item">
-                <a class="page-link" href="/user/profile/?page=<%= Math.min(current+1, count) %>">Next</a>
+                <a class="page-link" href="/user/profile/user/?page=<%= Math.min(current+1, count) %>">Next</a>
             </li>
         </ul>
     </nav>

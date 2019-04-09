@@ -1,0 +1,40 @@
+<form action="/photo/detail/<%=photo.id%>" method="POST">
+    <div class="row">
+        <div class=" col-md-6 col-sm-12">
+            <div>
+                <img class="img-fluid" src="/images/<%= photo.filename %>">
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div>
+                    <table class="table">
+                            <tr>
+                                <td>Username: </td>
+                                <td><%=photo.username%></td>
+                         </tr> <tr>
+                                <td>Model: </td>
+                                <td><%=photo.exifData.image.Model%> </td>
+                         </tr><tr>
+                                <td>Aperture Value: </td>
+                                <td> <%=photo.exifData.exif.MaxApertureValue%></td>
+                        </tr><tr>
+                                <td>ExposureTime: </td>
+                                <td><%=photo.exifData.exif.ExposureTime%></td>
+                         </tr><tr>
+                                <td>ISO: </td>
+                                <td><%=photo.exifData.exif.ISO%></td>
+                        </tr><tr>
+                                <td>Original Date&Time: </td>
+                                <td><%=photo.exifData.exif.DateTimeOriginal%> </td>
+                        </tr><tr>
+                                 <td>FocalLength: </td>
+                                 <td><%=photo.exifData.exif.FocalLength%></td>
+                        </tr><tr>
+                                <td>description: </td>
+                                <td><%=photo.description%></td>
+                        </tr>    
+                        </table>
+            </div>
+        </div>
+    </div>
+</form>

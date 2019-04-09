@@ -3,7 +3,7 @@
     <div class="form-group">
         <label for="exampleInputEmail1">User name</label>
         <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            placeholder="Enter username" name="username">
+            placeholder="Enter Username" name="username">
     </div>
 
     <div class="form-group">
@@ -26,8 +26,10 @@
             function submitForm(oFormElement) {
                 var xhr = new XMLHttpRequest();
                 xhr.onload = function () {
-                    if (xhr.responseText == "login successfully.") {
-                        window.location = "/user/profile";
+                    if (this.responseText == "login successfully.") {
+                        window.location = "/user/myprofile";
+                    }else if(this.responseText == "This is Admin!"){
+                        window.location = "/user/admin";
                     }
                     else {
                         alert(xhr.responseText);

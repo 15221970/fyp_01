@@ -34,24 +34,45 @@ module.exports = {
                         return res.serverError(err);  // IF ERROR Return and send 500 error with error
                     }
 
-                    console.log(files[0]);
+                    // console.log(files[0]);
 
                     files[0].username = req.session.username;
                     files[0].description = req.body['photo[description]'];
+                    files[0].lat = req.body['photo[lat]'];
+                    files[0].lng = req.body['photo[lng]'];
+
+                    var path = require('path');
+
+                    files[0].filename = path.basename(files[0].fd);
+                    console.log('filename: ' + files[0].filename);
+
 
                     var ExifImage = require('exif').ExifImage;
                     try {
                         new ExifImage({ image: files[0].fd }, function (error, exifData) {
-                            if (error){
+                            if (error) {
                                 console.log('Error: ' + error.message);
-       
-                            }else
+                            } else
                                 console.log(exifData); // Do something with your data!
 
                             files[0].exifData = exifData;
-                            // if(error.message== 'No Exif segment found in the given image.'){
-                            //     file[0].exifData= null;
-                            // }
+
+                            // var inputdata = {
+                            //     username: files[0].username,
+                            //     description: files[0].description,
+                            //     filename: files[0].filename,
+                            //     fd: files[0].fd,
+                            //     Model:files[0].exifData.image.Model,
+                            //     ExposureTime:files[0].exifData.exif.ExposureTime,
+                            //     FNumber: files[0].exifData.exif.FNumber,
+                            //     ISO: files[0].exifData.exif.ISO,
+                            //     DateTimeOriginal: files[0].exifData.exif.DateTimeOriginal,
+                            //     MaxApertureValue:files[0].exifData.exif.MaxApertureValue,
+                            //     FocalLength: files[0].exifData.exif.FocalLength,
+                            //     lat: files[0].lat,
+                            //     lng: files[0].lng,
+                                
+                            // };
                             Photo.create(files[0]).exec(function (err, model) {
                                 return res.json({
                                     status: 200,
@@ -72,18 +93,24 @@ module.exports = {
         }
 
     },
-   
-   
-    // paginate: function (req, res) {
 
-    //     const qPage = req.query.page || 1;
-    
-    //     Photo.find().paginate({ page: qPage, limit: 6 }).exec(function (err, photo) {
-    //         Photo.count().exec(function (err, value) {
-    //             var pages = Math.ceil(value / 2);
-    //             return res.view('person/paginate', { 'photo': photo, 'count': pages });
-    //         });
-    //     });
-    // },
+    detail: function (req, res) {
+        Photo.findOne(req.params.id).exec(function (err, photo) {
+            console.log(req.params.id);
+            return res.view('photo/detail', { 'photo': photo });
+        });
+    },
 
+
+
+    search: function (req, res) {
+        if (req.method == 'GET') {
+            return res.view('photo/search');
+        } else {
+            console.log(req.body.search_user);
+            Photo.find({username:req.body.search_user}).exec(function (err, photo) {
+                return res.view('photo/showResult', { 'photo': photo });
+            });
+        }
+    },
 };

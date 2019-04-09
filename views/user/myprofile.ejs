@@ -1,0 +1,78 @@
+<form action="/user/myprofile" method="POST"></form>
+<div class="container">
+    <h3>Your Photo: </h3>
+
+    <div class="row">
+        <% photo.forEach( function(photo) { %>
+        <div class="card  col-12 col-sm-6 col-lg-4 col-xl-3">
+            <img class="card-img-top" src="/images/<%= photo.filename %>" alt="no photo" width="200" height="200">
+
+
+            <div class="card-body">
+                <h3 class="card-title">
+                    <%= photo.description %>
+                </h3>
+
+            </div>
+
+            <ul class="list-group list-group-flush">
+
+
+                <li class="list-group-item">
+                    <b>DateTimeOriginal:</b>
+                    <%= photo.exifData ? photo.exifData.exif.DateTimeOriginal : '' %>
+                </li>
+                <li class="list-group-item">
+                    <b>Post Date and Time:</b>
+
+                    <%= new Date(photo.createdAt).getDate()%>:<%= new Date(photo.createdAt).getMonth()%>:<%= new Date(photo.createdAt).getFullYear()%>
+                    </br>
+                    <%= new Date(photo.createdAt).getHours()%>:<%= new Date(photo.createdAt).getMinutes()%>:<%= new Date(photo.createdAt).getSeconds()%>
+                </li>
+
+
+            </ul>
+            <div class="card-body">
+                <a href="/photo/detail/<%= photo.id %>" class="card-link">Detail</a>
+
+            </div>
+        </div>
+
+
+        <% }); %>
+
+
+
+    </div>
+
+    <div>
+
+
+        <p class="totop">
+            <a href="#top">Back to top</a>
+        </p>
+    </div>
+</div>
+
+<br>
+
+<% const current = Number(req.query.page || 1); %>
+
+<nav aria-label="Page navigation example">
+
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" href="/user/myprofile/?page=<%= Math.max(current-1, 1) %>">Previous</a>
+        </li>
+
+        <% for (i = 1; i <= count; i++) { %>
+        <li class="page-item">
+            <a class="page-link" href="/user/myprofile/?page=<%= i %>"><%= i %></a>
+        </li>
+        <% } %>
+
+        <li class="page-item">
+            <a class="page-link" href="/user/myprofile/?page=<%= Math.min(current+1, count) %>">Next</a>
+        </li>
+    </ul>
+</nav>
