@@ -1,4 +1,4 @@
-<form action="/photo/upload" enctype="multipart/form-data" method="POST">
+
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600' rel='stylesheet' type='text/css'>
   <style>
     /* Styles included inline since you'll probably be deleting this page anyway */
@@ -315,33 +315,40 @@
     </div>
 
   </div>
-  <form>
+  <form action="/photo/upload" enctype="multipart/form-data" method="POST">
 
     <div class="form-group">
       <label for="text ">Description</label>
       <textarea type="text" class="form-control-file" id="d_text" name="photo[description]"></textarea>
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="text ">Location</label>
-      <input type="text" class="form-control" placeholder="Location" name="photo[location]">
+      <input type="text" class="form-control" placeholder="Location" >
+    </div> -->
+    
+   <div class="form-group">
+      <input id="pac-input" class="form-control" type="text" placeholder="Location" name="photo[locationName]">
     </div>
-    <div class="form-group">
-      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      
       <div id="map"></div>
-    </div>
-    <div class="form-group">
-      <label for="file upload"> Upload Photo</label>
-      <input type="file" class="form-control-file" name="photo[file]">
       <input type="hidden"  name="photo[lat]" id="lat">
       <input type="hidden"  name="photo[lng]" id="lng" >
+   
+    <div class="form-group">
+      <label for="file upload"> Upload Photo</label>
+      <input type="file" class="form-control-file" name="photo[file]" required>
+
     </div>
     <br>
+    <div class="alert alert-warning" role="alert">
+        Please upload a JPG/jpeg format photo for your sharing.
+      </div>
     <div align="left">
       <button type="submit" class="btn btn-primary">submit</button>
     </div>
   </form>
-</form>
+
 
 <script>
   // This example adds a search box to a map, using the Google Place Autocomplete

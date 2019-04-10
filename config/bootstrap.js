@@ -21,9 +21,9 @@ module.exports.bootstrap = function (cb) {
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   var users = [
-    { "username": "admin", "password": "123456", "id": 101 },
-    { "username": "user", "password": "123", "id": 102 },
-    { "username": "testuser", "password": "123", "id": 103 }
+    { "username": "admin", "password": "123456",  "email": "admin@admi.com","block":false},
+    { "username": "user", "password": "123","email": "user@gmail.com","block":false },
+    { "username": "testuser", "password": "123" ,"email": "testuse1234@hotmail.com","block":false}
   ];
 
   users.forEach(function (user) {
@@ -35,14 +35,14 @@ module.exports.bootstrap = function (cb) {
   });
 
   var photos = [
-    { "filename": "test_photo1.JPG", "fd": sails.config.appPath + '/assets/images/test_photo1.JPG', "username": "user","description": "This is test 1!" },
-    { "filename": "test_photo2.JPG", "fd": sails.config.appPath + '/assets/images/test_photo2.JPG', "username": "user" ,"description": "This is test 2!"},
-    { "filename": "test_photo3.JPG", "fd": sails.config.appPath + '/assets/images/test_photo3.JPG', "username": "user" ,"description": "This is test 3!"},
-    { "filename": "test_photo4.JPG", "fd": sails.config.appPath + '/assets/images/test_photo4.JPG', "username": "user" ,"description": "This is test 4!"},
-    { "filename": "test_photo5.JPG", "fd": sails.config.appPath + '/assets/images/test_photo5.JPG', "username": "testuser" ,"description": "This is test 5!"},
-    { "filename": "test_photo6.JPG", "fd": sails.config.appPath + '/assets/images/test_photo6.JPG', "username": "testuser" ,"description": "This is test 6!"},
-    { "filename": "test_photo7.JPG", "fd": sails.config.appPath + '/assets/images/test_photo7.JPG', "username": "testuser" ,"description": "This is test 7!"},
-    { "filename": "test_photo8.JPG", "fd": sails.config.appPath + '/assets/images/test_photo8.JPG', "username": "testuser" ,"description": "This is test 8!"}
+    { "filename": "test_photo1.JPG", "fd": sails.config.appPath + '/assets/images/test_photo1.JPG', "username": "user","description": "This is test 1!" ,"locationName":"Renfrew Rd","lat":22.338403,"lng":114.18177100000003},
+    { "filename": "test_photo2.JPG", "fd": sails.config.appPath + '/assets/images/test_photo2.JPG', "username": "user" ,"description": "This is test 2!","locationName":"Kowloon","lat":22.3185673,"lng":114.17960570000002},
+    { "filename": "test_photo3.JPG", "fd": sails.config.appPath + '/assets/images/test_photo3.JPG', "username": "user" ,"description": "This is test 3!","locationName":"Kowloon","lat":22.3325509,"lng":114.17963020000002},
+    { "filename": "test_photo4.JPG", "fd": sails.config.appPath + '/assets/images/test_photo4.JPG', "username": "user" ,"description": "This is test 4!","locationName":"Baptist University Road","lat":22.3356447,"lng":114.18293089999997},
+    { "filename": "test_photo5.JPG", "fd": sails.config.appPath + '/assets/images/test_photo5.JPG', "username": "testuser" ,"description": "This is test 5!","locationName":"Kowloon","lat":22.3185673,"lng":114.17960570000002},
+    { "filename": "test_photo6.JPG", "fd": sails.config.appPath + '/assets/images/test_photo6.JPG', "username": "testuser" ,"description": "This is test 6!","locationName":"Tsuen Wan","lat":22.3699122,"lng":114.11443059999999},
+    { "filename": "test_photo7.JPG", "fd": sails.config.appPath + '/assets/images/test_photo7.JPG', "username": "testuser" ,"description": "This is test 7!","locationName":"Hong Kong","lat":22.2346359,"lng":114.17217460000006},
+    { "filename": "test_photo8.JPG", "fd": sails.config.appPath + '/assets/images/test_photo8.JPG', "username": "testuser" ,"description": "This is test 8!","locationName":"Harbin","lat":45.803775,"lng":126.53496700000005}
   ];
  
   // photos.forEach(function (photo) {
@@ -61,9 +61,27 @@ module.exports.bootstrap = function (cb) {
         // else
         //   console.log(exifData); // Do something with your data!
 
-        photo.exifData = exifData;
-        photo.lat= null,
-        photo.lng=null,
+
+        // photo.lat= null;
+        // photo.lng=null;
+       
+        if (exifData) {
+          if (exifData.image) {
+            photo.Model = exifData.image.Model;
+          }
+          if(exifData.exif){
+            photo.ExposureTime = exifData.exif.ExposureTime;
+            photo.exifData =exifData.exif.FNumber;
+            photo.ISO= exifData.exif.ISO;
+            photo.DateTimeOriginal=exifData.exif.DateTimeOriginal;
+            photo.MaxApertureValue=exifData.exif.MaxApertureValue;
+            photo.FocalLength = exifData.exif.FocalLength;
+          }
+
+      }
+      
+        // photo.exifData = exifData;
+
         //     lng: photo.lng,
       //   var inputdata = {
       //     username:  photo.username,

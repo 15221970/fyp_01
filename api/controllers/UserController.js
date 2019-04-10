@@ -16,9 +16,9 @@ module.exports = {
             const saltRounds = 10;
             var input = req.body;
 
-            // if (input.password!=req.body.comfirm_pwd){
-            //     return res.send("Two input password must be consistent!");
-            // }
+            if (input.password!=req.body.comfirm_pwd){
+                return res.send("Two input password must be consistent!");
+            }
 
 
 
@@ -34,7 +34,8 @@ module.exports = {
                 var inputdata = {
                     username: input.username,
                     password: input.password,
-                    email: input.email
+                    email: input.email,
+                    block: false
                 };
                 User.create(inputdata).exec(function (err, model2) {
 
@@ -64,9 +65,12 @@ module.exports = {
             return res.view('user/login');
         else {
             User.findOne({ username: req.body.username }).exec(function (err, user) {
-
                 if (user == null)
-                    return res.send("No such user");
+                return res.send("No such user");
+                if (user.block) {
+                    return res.send("Account has been blocked");
+                }
+
 
                 if (!bcrypt.compareSync(req.body.password, user.password))
                     return res.send("Wrong Password");
@@ -77,7 +81,7 @@ module.exports = {
 
                     console.log("The new session id is " + req.session.id + ".");
                     req.session.username = req.body.username;
-                   // console.log("req.session.username is " + req.session.username + ".");
+                    // console.log("req.session.username is " + req.session.username + ".");
                     if (req.session.username == "admin")
                         return res.send("This is Admin!");
 
@@ -99,17 +103,10 @@ module.exports = {
     },
 
 
-
-    // home: function (req, res) {
-    //     return res.view('user/home');
-    // },
-
     welcome: function (req, res) {
         return res.view('user/welcome');
     },
-    admin: function (req, res) {
-        return res.view('user/admin');
-    },
+
 
     myprofile: function (req, res) {
         if (req.session.username != undefined) {
@@ -119,7 +116,7 @@ module.exports = {
                 .paginate({ page: qPage, limit: 6 })
                 .sort({ createdAt: 'DESC' })
                 .exec(function (err, photo) {
-                    Photo.count().exec(function (err, value) {
+                    Photo.count({ username: req.session.username }).exec(function (err, value) {
                         var pages = Math.ceil(value / 6);
                         return res.view('user/myprofile', { 'photo': photo, 'count': pages });
                     });
@@ -128,6 +125,8 @@ module.exports = {
             return res.view('user/login');
         }
     },
+
+
 
     // showUploadPhoto: function (req, res) {
 
@@ -151,29 +150,85 @@ module.exports = {
             });
     },
 
-    admin: function (req, res) {
-        User.find().exec(function (err, user) {
-            return res.view('user/admin', { 'user': user });
+    adminSearch: function (req, res) {
+        console.log(req.query.search_button);
+        const qPage = req.query.page || 1;
+        User.find().paginate({ page: qPage, limit: 50 })
+            .where({ username: { contains: req.query.search_button } })
+            .exec(function (err, user) {
+                 User.count({username:req.query.search_button}).exec(function (err, value) {
+                    var pages = Math.ceil(value / 50);
+                    
+                return res.view('user/adminSearch', { 'user': user ,'count': pages});
+            });
         });
-
     },
+
+    // admin: function (req, res) {
+
+    // User.find().exec(function (err, user) {
+    //         return res.view('user/admin', { 'user': user });
+    //     });
+    // },
+
+    admin: function (req, res) {
+        const qPage = req.query.page || 1;
+
+
+        User.find().paginate({ page: qPage, limit: 50 })
+            .exec(function (err, user) {
+                User.count().exec(function (err, value) {
+                    var pages = Math.ceil(value / 50);
+                    return res.view('user/admin', { 'user': user, 'count': pages });
+                });
+            });
+    },
+
 
     profile: function (req, res) {
 
         const qPage = req.query.page || 1;
-       
+
 
         console.log(req.params.id);
-   
-        Photo.find({username:req.params.id})
+
+        Photo.find({ username: req.params.id })
             .paginate({ page: qPage, limit: 6 })
             .sort({ createdAt: 'DESC' })
             .exec(function (err, photo) {
-                Photo.count().exec(function (err, value) {
-                    var pages = Math.ceil(value / 6);
-                    return res.view('user/profile', { 'photo': photo, 'count': pages });
+                Photo.count({ username: req.params.id }).exec(function (err, value) {
+                    User.findOne({ username: req.params.id }).exec(function (err, user) {
+                        var pages = Math.ceil(value / 6);
+                        return res.view('user/profile', { 'photo': photo, 'count': pages, 'user': user });
+                    })
+
+
                 });
             });
+    },
+
+    adminBlock: function (req, res) {
+
+        User.findOne(req.params.id).exec(function (err, user) {
+            if (user.block == true)
+                user.block = false;
+            else if (user.block == false)
+                user.block = true
+            user.save();
+            return res.redirect("/user/admin");
+        });
+    },
+
+    adminSearchBlock: function (req, res) {
+
+        User.findOne(req.params.id).exec(function (err, user) {
+            if (user.block == true)
+                user.block = false;
+            else if (user.block == false)
+                user.block = true
+            user.save();
+            return res.redirect("/user/adminSearch");
+        });
     },
 
 };

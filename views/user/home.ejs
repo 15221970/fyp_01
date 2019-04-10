@@ -40,14 +40,18 @@
                         <a class="nav-link" href="/user/profile/<%=photo.username%>"><%= photo.username %></a>
                     </li>
                     <li class="list-group-item">
+                            <b>Location:</b>   
+                            <%= photo.locationName %>
+                        </li>
+                    <li class="list-group-item">
                         <b>DateTimeOriginal:</b>
     
-                        <%= photo.exifData ? photo.exifData.exif.DateTimeOriginal : '' %>
+                        <%= photo.exifData ? photo.DateTimeOriginal : '' %>
                     </li>
                     <li class="list-group-item">
                             <b>Post Date and Time:</b>
         
-                            <%= new Date(photo.createdAt).getDate()%>:<%= new Date(photo.createdAt).getMonth()%>:<%= new Date(photo.createdAt).getFullYear()%>
+                            <%= new Date(photo.createdAt).getFullYear()%>:<%= new Date(photo.createdAt).getMonth()%>:<%= new Date(photo.createdAt).getDate()%>
                         </br>
                         <%= new Date(photo.createdAt).getHours()%>:<%= new Date(photo.createdAt).getMinutes()%>:<%= new Date(photo.createdAt).getSeconds()%>
                         </li>

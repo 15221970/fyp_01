@@ -30,7 +30,9 @@ module.exports.policies = {
 
  UserController: {
 
-    admin: 'isAdmin'
+    admin: 'isAdmin',
+    adminBlock:'isAdmin',
+    adminSearchBlock:'isAdmin'
 
 }
 

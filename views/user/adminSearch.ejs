@@ -1,0 +1,73 @@
+<form action="/user/adminSearch" method="GET">
+
+    <br>
+    <div class="row form-group col-md-8 col-sm-12">
+        <div class="col">
+            <input type="text" class="form-control" name="search_button">
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" type="submit" id="button-addon2">Search</button>
+        </div>
+</div>
+
+</form>
+
+<div class="col-md-6 col-sm-12">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">User Email</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Block Account</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% user.forEach( function(user) { %>
+            <tr>
+                <td>
+                    <a class="nav-link" href="/user/profile/<%=user.username%>"><%= user.username %> </a>
+                </td>
+                <td><%= user.email %></td>
+                <td><%= user.createdAt %></td>
+                <td>
+                    <% if(user.username!="admin"){ %>
+
+                    <% if(user.block==true){ %>
+                    <a class="nav-link" id="block" href="/user/adminSearchBlock/<%= user.id %>">Blocked</a>
+                    <% }else{ %>
+                    <a class="nav-link" id="blocked" href="/user/adminSearchBlock/<%= user.id %>">Block</a>
+                    <% }} %>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+
+</div>
+
+
+<br>
+
+
+<% const current = Number(req.query.page || 1); %>
+
+<nav aria-label="Page navigation example" >
+       
+    <ul class="pagination justify-content-center">               
+            <li class="page-item">
+                <a class="page-link" href="/user/adminSearch/?search_button=<%=req.query.search_button%>?page=<%= Math.max(current-1, 1) %>">Previous</a>
+            </li>
+    
+            <% for (i = 1; i <= count; i++) { %>
+                <li class="page-item">
+                    <a class="page-link" href="/user/adminSearch/?search_button=<%=req.query.search_button%>?page=<%= i %>"><%= i %></a>
+                </li>
+            <% } %>
+           
+            <li class="page-item">
+                <a class="page-link" href="/user/adminSearch/?search_button=<%=req.query.search_button%>?page=<%= Math.min(current+1, count) %>">Next</a>
+            </li>
+        </ul>
+    </nav>

@@ -71,14 +71,17 @@
             <li class="nav-item">
                 <a class="nav-link" id="admin" href="/user/admin">Admin</a>
               </li>
+              <li class="nav-item">
+                  <a class="nav-link" id="adminSearch" href="/user/adminSearch">Admin Search</a>
+                </li>
             <% } %>
           <% if (typeof req.session.username != "undefined" ) { %>
             <li class="nav-item">
                 <a class="nav-link" href="/user/myprofile">Profile</a>
               </li>
             <li class="nav-item">
-                <a class="nav-link  text-success" href="/user/logout">( logout )</a>
-              </li>
+                <a class="nav-link  text-success" href="/user/logout">Hi,<%= req.session.username %> ( logout )</a>
+              </li>          
               <% } else{%>
               <li class="nav-item">
                 <a class="nav-link  text-success" href="/user/login">( login )</a>

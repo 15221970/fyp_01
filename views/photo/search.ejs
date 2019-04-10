@@ -1,4 +1,3 @@
-<form action="/photo/search" method="POST"></form>
 <!-- Default home page -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600' rel='stylesheet' type='text/css'>
 <style>
@@ -310,7 +309,7 @@
 </script>
 
 
-<form>
+<form action="/photo/search" method="GET">
   <div class="default-page">
     <div class="header">
       <h1 id="main-title" class="container">
@@ -318,33 +317,113 @@
       </h1>
     </div>
     <div id="map" style="width:600px; height: 400px;"></div>
-    <div class="form-group">
-      <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <select class="form-control" id="sel1">
-              <option value="all">All</option>
-              <option value="name">User Name</option>
-              <option value="location">Location</option>
-            </select>
-          </div>
-        <div class="form-group">
-          <input type="text" class="form-control" aria-label="Text input with dropdown button" id="01" name="search_user">
+    <div class="row form-group col-md-6 col-sm-12">
+        <div class="col">
+            <div class="input-group-prepend">
+                <select class="form-control" id="searchBy" name="searchBy" onChange="changetextbox();">
+                  <option value="name">User Name</option>
+                  <option value="location">Location Name</option>
+                  <option value="nearby">location Nearby</option>
+                </select>
+              </div>
         </div>
-        <div class="form-group">
-            <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-  
-          </div>
-        <div class="input-group-append"></div>
-        <button class="btn btn-primary" type="submit" id="button-addon2">Search</button>
+        <div class="col"> </div>
+</div>
+
       </div>
-    </div>
+      <div class="form-group " id="location_testbox">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button" name="search_button">
+      </div>
+      <div class="form-group" id="nearBy_testbox" style="display: none">
+        <input id="pac-input" class="form-control" type="text" placeholder="Search Box">
+      </div>
+      <div class="form-group">
+      <button class="btn btn-primary" type="submit" id="button-addon2">Search</button>
+    
   </div>
-  <!-- <input type="hidden" name="search_lat" id="lat">
-  <input type="hidden" name="search_lng" id="lng"> -->
+
+  <input type="hidden" name="search_lat" id="lat">
+  <input type="hidden" name="search_lng" id="lng">
 </form>
 
 
-<!-- <script>
+
+<div class="row">
+  <% photo.forEach( function(photo) { %>
+  <div class="card  col-12 col-sm-6 col-lg-4 col-xl-3">
+    <img class="card-img-top" src="/images/<%= photo.filename %>" alt="no photo" width="200" height="200">
+
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+
+        <h3 class="card-title">
+          <%= photo.description %>
+        </h3>
+
+    </div>
+    <li class="list-group-item">
+      <b>User:</b>
+      <a class="nav-link" href="/user/profile/<%=photo.username%>"><%= photo.username %></a>
+    </li>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <b>Location:</b>
+        <%= photo.locationName %>
+      </li>
+
+      <li class="list-group-item">
+        <b>DateTimeOriginal:</b>
+        <%= photo.exifData ? photo.DateTimeOriginal : '' %>
+      </li>
+      <li class="list-group-item">
+        <b>Post Date and Time:</b>
+
+        <%= new Date(photo.createdAt).getDate()%>:<%= new Date(photo.createdAt).getMonth()%>:<%= new Date(photo.createdAt).getFullYear()%>
+        </br>
+        <%= new Date(photo.createdAt).getHours()%>:<%= new Date(photo.createdAt).getMinutes()%>:<%= new Date(photo.createdAt).getSeconds()%>
+      </li>
+
+
+    </ul>
+    <div class="card-body">
+      <a href="/photo/detail/<%= photo.id %>" class="card-link">Detail</a>
+
+    </div>
+  </div>
+
+
+  <% }); %>
+
+
+
+</div>
+
+<div>
+
+
+  <p class="totop">
+    <a href="#top">Back to top</a>
+  </p>
+</div>
+</div>
+<br>
+
+<script>
+  function changetextbox() {
+    if (document.getElementById("searchBy").value == "name" || document.getElementById("searchBy").value == "location") {
+      document.getElementById("location_testbox").style = 'display:block';
+      document.getElementById("nearBy_testbox").style = 'display:none';
+    } else {
+      document.getElementById("location_testbox").style = 'display:none';
+      document.getElementById("nearBy_testbox").style = 'display:block';
+      // document.getElementById("location_testbox").disable=true;
+      // document.getElementById("nearBy_testbox").disable=false;
+
+    }
+  }
+</script>
+
+<script>
   // This example adds a search box to a map, using the Google Place Autocomplete
   // feature. People can enter geographical searches. The search box will return a
   // pick list containing a mix of places and predicted search terms.
@@ -427,4 +506,4 @@
 </script>
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzygHpgEpXhCwzaKRkAxF8hlYXkN-FW_k&libraries=places&callback=initAutocomplete"
-  async defer></script> -->
+  async defer></script>

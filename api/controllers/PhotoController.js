@@ -38,8 +38,9 @@ module.exports = {
 
                     files[0].username = req.session.username;
                     files[0].description = req.body['photo[description]'];
-                    files[0].lat = req.body['photo[lat]'];
-                    files[0].lng = req.body['photo[lng]'];
+                    files[0].locationName = req.body['photo[locationName]'];
+                    files[0].lat = parseFloat(req.body['photo[lat]']);
+                    files[0].lng = parseFloat(req.body['photo[lng]']);
 
                     var path = require('path');
 
@@ -53,9 +54,24 @@ module.exports = {
                             if (error) {
                                 console.log('Error: ' + error.message);
                             } else
-                                console.log(exifData); // Do something with your data!
+                                //console.log(exifData); // Do something with your data!
 
-                            files[0].exifData = exifData;
+
+                                if (exifData) {
+                                    if (exifData.image) {
+                                        files[0].Model = exifData.image.Model;
+                                    }
+                                    if (exifData.exif) {
+                                        files[0].ExposureTime = exifData.exif.ExposureTime;
+                                        files[0].exifData = exifData.exif.FNumber;
+                                        files[0].ISO = exifData.exif.ISO;
+                                        files[0].DateTimeOriginal = exifData.exif.DateTimeOriginal;
+                                        files[0].MaxApertureValue = exifData.exif.MaxApertureValue;
+                                        files[0].FocalLength = exifData.exif.FocalLength;
+                                    }
+
+                                }
+                            // files[0].exifData = exifData;
 
                             // var inputdata = {
                             //     username: files[0].username,
@@ -71,13 +87,14 @@ module.exports = {
                             //     FocalLength: files[0].exifData.exif.FocalLength,
                             //     lat: files[0].lat,
                             //     lng: files[0].lng,
-                                
+
                             // };
                             Photo.create(files[0]).exec(function (err, model) {
-                                return res.json({
-                                    status: 200,
-                                    file: files
-                                })
+                              return res.redirect('/user/myprofile');
+                                // return res.json({
+                                //     status: 200,
+                                //     file: files
+                                // })
                             });
                         });
                     } catch (error) {
@@ -104,13 +121,61 @@ module.exports = {
 
 
     search: function (req, res) {
-        if (req.method == 'GET') {
-            return res.view('photo/search');
-        } else {
-            console.log(req.body.search_user);
-            Photo.find({username:req.body.search_user}).exec(function (err, photo) {
-                return res.view('photo/showResult', { 'photo': photo });
-            });
+
+        if (req.query.searchBy == "name") {
+
+            Photo.find()
+                .where({ username: { contains: req.query.search_button } })
+                .sort({ createdAt: 'DESC' })
+                .exec(function (err, photo) {
+
+                    return res.view('photo/search', { 'photo': photo });
+                })
+
+        } else if (req.query.searchBy == "location") {
+            // console.log(req.query.search_button);
+            Photo.find()
+                .where({ locationName: { contains: req.query.search_button } })
+                .sort({ createdAt: 'DESC' })
+                .exec(function (err, photo) {
+
+                    return res.view('photo/search', { 'photo': photo });
+                })
+        } 
+        else if (req.query.searchBy == "nearby") {
+            console.log("lat need to in :"+(parseFloat(req.query.search_lat)-0.05)+" to "+(parseFloat(req.query.search_lat)+0.05));
+            console.log("lng need to in :"+(parseFloat(req.query.search_lng)-0.05)+" to "+(parseFloat(req.query.search_lng)+0.05));
+            Photo.find()
+                .where({
+                    lat: { '>=': parseFloat(req.query.search_lat)-0.05, '<=':parseFloat(req.query.search_lat)+0.05},
+                    lng: { '>=': parseFloat(req.query.search_lng)-0.05, '<=':parseFloat(req.query.search_lng)+0.05}
+                 })
+                .sort({ createdAt: 'DESC' })
+                .exec(function (err, photo) {
+                    console.log({photo:photo.locationName});
+                    return res.view('photo/search', { 'photo': photo });
+                })
         }
+
+        else {
+            return res.view('photo/search', { 'photo': [] });
+        }
+
+
     },
+
+
+
+delete: function(req, res) {
+    console.log(req.params.id);
+    Photo.findOne(req.params.id).exec( function(err, photo) {
+         if (photo != null) {
+             photo.destroy();
+             return res.redirect("/user/myprofile");
+         } else {
+             return res.send("Photo not found");
+         }
+     }); 
+ },
+ 
 };
